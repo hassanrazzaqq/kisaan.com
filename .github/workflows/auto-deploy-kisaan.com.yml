@@ -1,0 +1,63 @@
+# 2021 19 Dec 23:41 Build and Deploy Kisaan.com Code Igniter 4 Docker Image
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+  
+name: Main image
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    runs-on: self-hosted
+#ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    environment: 
+    steps:
+    - name: Check out this repo code
+      uses: actions/checkout@v2
+
+    # - name: Run script file
+    #   run: |
+    #      chmod +x ./Kisaan.com_website/devops/scripts/prepare_env.sh
+    #      ./Kisaan.com_website/devops/scripts/prepare_env.sh ${{ secrets.DEFAULT_DOMAIN }} ${{ secrets.DB_HOSTNAME }} ${{ secrets.DB_USERNAME }} ${{ secrets.DB_PASSWORD }} ${{ secrets.DB_NAME }}
+    #   shell: bash
+
+    - name: short-sha
+      uses: benjlevesque/short-sha@v1.2
+      with:
+        length: 6
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-2
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+      
+    - run: echo $SHA
+      env:
+       SHA: ${{ steps.short-sha.outputs.sha }}
+
+    - run: echo $SHA
+      env:
+       SHA: ${{ env.SHA }}
+
+    - name: Build, tag, and push image to Amazon ECR
+      run: |
+        docker build -f kisaan.com-devops/docker/kisaan.com-website/Dockerfile -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.eu-west-2.amazonaws.com/tenthmatrix/kisaan.com:${{ env.SHA }} .
+        docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.eu-west-2.amazonaws.com/tenthmatrix/kisaan.com:${{ env.SHA }}
+
+    - name: helm deploy
+      uses: koslib/helm-eks-action@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        #command: helm delete tizohub
+        command: helm upgrade -i kisaan.com ./kisaan.com-devops/kisaanComChart --set=image.tag=${{ env.SHA }} --set DEFAULT_DOMAIN="${{ secrets.DEFAULT_DOMAIN }}" --set DB_HOSTNAME="${{ secrets.DB_HOSTNAME }}" --set DB_NAME="${{ secrets.DB_NAME }}" --set DB_USERNAME="${{ secrets.DB_USERNAME }}" --set DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
