@@ -60,4 +60,4 @@ jobs:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
         #command: helm delete tizohub
-        command: helm upgrade -i kisaan.com ./kisaan.com-devops/kisaanComChart --set=image.tag=${{ env.SHA }} --set DEFAULT_DOMAIN="${{ secrets.DEFAULT_DOMAIN }}" --set DB_HOSTNAME="${{ secrets.DB_HOSTNAME }}" --set DB_NAME="${{ secrets.DB_NAME }}" --set DB_USERNAME="${{ secrets.DB_USERNAME }}" --set DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
+        command: helm upgrade -i kisaan ./kisaan.com-devops/kisaanComChart --set=image.tag=${{ env.SHA }} --set DEFAULT_DOMAIN="${{ secrets.DEFAULT_DOMAIN }}" --set DB_HOSTNAME="${{ secrets.DB_HOSTNAME }}" --set DB_NAME="${{ secrets.DB_NAME }}" --set DB_USERNAME="${{ secrets.DB_USERNAME }}" --set DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
