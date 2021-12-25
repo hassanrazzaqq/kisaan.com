@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "marshallharberci4.fullname" . }}
+  name: {{ include "kisaan.fullname" . }}
   labels:
-    {{- include "marshallharberci4.labels" . | nindent 4 }}
+    {{- include "kisaan.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "marshallharberci4.selectorLabels" . | nindent 6 }}
+      {{- include "kisaan.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,11 +18,11 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "marshallharberci4.selectorLabels" . | nindent 8 }}
+        {{- include "kisaan.selectorLabels" . | nindent 8 }}
     spec:
       imagePullSecrets:
         - name: {{ .Values.imagePullSecrets }}
-      serviceAccountName: {{ include "marshallharberci4.serviceAccountName" . }}
+      serviceAccountName: {{ include "kisaan.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:

@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "marshallharberci4.name" -}}
+{{- define "kisaan.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "marshallharberci4.fullname" -}}
+{{- define "kisaan.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "marshallharberci4.chart" -}}
+{{- define "kisaan.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "marshallharberci4.labels" -}}
-helm.sh/chart: {{ include "marshallharberci4.chart" . }}
-{{ include "marshallharberci4.selectorLabels" . }}
+{{- define "kisaan.labels" -}}
+helm.sh/chart: {{ include "kisaan.chart" . }}
+{{ include "kisaan.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "marshallharberci4.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "marshallharberci4.name" . }}
+{{- define "kisaan.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "kisaan.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "marshallharberci4.serviceAccountName" -}}
+{{- define "kisaan.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "marshallharberci4.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "kisaan.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
