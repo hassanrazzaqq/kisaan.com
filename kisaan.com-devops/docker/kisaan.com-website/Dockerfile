@@ -9,6 +9,8 @@ RUN mkdir -p /var/www/html/kisaan.com
 
 ADD kisaan.com /var/www/html/kisaan.com/
 
+RUN ls -al /var/www/html/kisaan.com/
+
 RUN chgrp www-data -R /var/www/html/kisaan.com/
 RUN chmod 777 -R /var/www/html/kisaan.com/
 
