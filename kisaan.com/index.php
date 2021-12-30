@@ -1,3 +1,7 @@
+<?php
+php_info();
+?>
+
 <!---joshi-web-designer-----header-block -->
 <?php include"header.php" ?>
 <!---joshi-web-designer-----footer-block -->
