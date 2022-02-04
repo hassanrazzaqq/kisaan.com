@@ -24,7 +24,7 @@
       <div class="col-md-4 text-center">
         <div class="ftrcntcalusblk">
           <p>Call Us On</p>
-          <h3>+91 98960 98960</h3>
+          <h3>+91 98960 98999</h3>
         </div>
       </div>
 
